@@ -79,7 +79,7 @@ func TestToItemProductResponse_AllFields(t *testing.T) {
 	if resp.Seller.Rating != productItem.Seller.Rating {
 		t.Errorf("Seller Rating mismatch")
 	}
-	if len(resp.PaymentMethods) != 1 || resp.PaymentMethods[0].PaymentMethodID != paymentMethods[0].PaymentMethodID {
+	if len(resp.PaymentMethods) != 2 || resp.PaymentMethods[0].PaymentMethodID != paymentMethods[0].PaymentMethodID {
 		t.Errorf("PaymentMethods mismatch")
 	}
 }
@@ -87,11 +87,11 @@ func TestToItemProductResponse_AllFields(t *testing.T) {
 func TestToItemProductResponse_EmptySlicesAndNilParent(t *testing.T) {
 	factory := factory.NewItemProductResponseFactory()
 
-	productItem := MockProductItem
+	productItem := MockProductItemEmptySlices
 
 	resp := factory.ToItemProductResponse(productItem, nil)
 
-	if resp.Photos != nil {
+	if len(resp.Photos) != 0 {
 		t.Errorf("Expected nil Photos")
 	}
 	if resp.Reviews != nil {

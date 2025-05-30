@@ -17,7 +17,6 @@ func NewItemProductResponseFactory() ItemProductResponseFactory {
 
 func (f *DefaultItemProductResponseFactory) ToItemProductResponse(p domain.ProductItem, pm []domain.PaymentMethod) *delivery.ItemProductResponse {
 	return &delivery.ItemProductResponse{
-
 		ProductID:         p.ProductID,
 		Price:             p.Price,
 		PreviousPrice:     p.PreviousPrice,

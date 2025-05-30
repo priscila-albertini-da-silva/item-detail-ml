@@ -1,6 +1,7 @@
 package domain
 
 type Promotion struct {
+	PromotionID      string
 	ProductID        string
 	Description      string
 	DiscountPct      float64
