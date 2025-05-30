@@ -1,0 +1,175 @@
+[
+  {
+    "ProductItemID": "PI001",
+    "SellerID": "S001",
+    "ProductID": "P001",
+    "Seller": {
+      "SellerID": "S001",
+      "Name": "Loja Oficial",
+      "OfficialSeal": true,
+      "Rating": 4.9
+    },
+    "Product": {
+      "ProductID": "P001",
+      "Name": "Smartphone X",
+      "Description": "Smartphone com câmera de 50MP e bateria de longa duração.",
+      "Category": {
+        "CategoryID": "C001",
+        "Description": "Celulares",
+        "ParentCategory": null
+      },
+      "Brand": "TechBrand",
+      "RelatedProducts": [
+        {
+          "ProductItemID": "PI002",
+          "Name": "Smartphone Y",
+          "Price": 899.99,
+          "Promotion": "Desconto 10%",
+          "Photo": "smartphone_y.jpg"
+        }
+      ],
+      "TechnicalFeatures": {
+        "Camera": "50MP",
+        "Battery": "5000mAh",
+        "Screen": "6.5 polegadas"
+      }
+    },
+    "Price": 999.99,
+    "PreviousPrice": 1199.99,
+    "Stock": 15,
+    "Color": "Preto",
+    "Colors": [
+      {
+        "ProductItemID": "PI001",
+        "Color": "Preto",
+        "Photo": "smartphone_x_preto.jpg"
+      },
+      {
+        "ProductItemID": "PI001",
+        "Color": "Azul",
+        "Photo": "smartphone_x_azul.jpg"
+      }
+    ],
+    "Reviews": [
+      {
+        "ReviewID": "R001",
+        "Customer": "Maria",
+        "Rate": 5,
+        "Review": "Excelente aparelho, superou minhas expectativas!"
+      },
+      {
+        "ReviewID": "R002",
+        "Customer": "João",
+        "Rate": 4,
+        "Review": "Muito bom, mas a bateria poderia durar mais."
+      }
+    ],
+    "Photos": [
+      "smartphone_x_1.jpg",
+      "smartphone_x_2.jpg"
+    ],
+    "Promotions": [
+      {
+        "ProductID": "P001",
+        "Description": "12% off em 10x de R$100",
+        "DiscountPct": 12.0,
+        "Installments": 10,
+        "InstallmentValue": 100.0,
+        "CardType": "",
+        "ExtraDiscountPct": 0.0
+      },
+      {
+        "ProductID": "P001",
+        "Description": "10% off com Blue Card Visa",
+        "DiscountPct": 10.0,
+        "Installments": 1,
+        "InstallmentValue": 0.0,
+        "CardType": "Blue Card Visa",
+        "ExtraDiscountPct": 0.0
+      }
+    ],
+    "BestSeller": true
+  },
+  {
+    "ProductItemID": "PI002",
+    "SellerID": "S002",
+    "ProductID": "P002",
+    "Seller": {
+      "SellerID": "S002",
+      "Name": "Bike Store",
+      "OfficialSeal": false,
+      "Rating": 4.5
+    },
+    "Product": {
+      "ProductID": "P002",
+      "Name": "Mountain Bike Pro",
+      "Description": "Bicicleta aro 29, quadro de alumínio, 24 marchas.",
+      "Category": {
+        "CategoryID": "C002",
+        "Description": "Bicicletas",
+        "ParentCategory": null
+      },
+      "Brand": "BikeBrand",
+      "RelatedProducts": [
+        {
+          "ProductItemID": "PI001",
+          "Name": "Smartphone X",
+          "Price": 999.99,
+          "Promotion": "12% off",
+          "Photo": "smartphone_x_1.jpg"
+        }
+      ],
+      "TechnicalFeatures": {
+        "RimSize": "29 polegadas",
+        "FrameMaterial": "Alumínio",
+        "Gears": "24"
+      }
+    },
+    "Price": 1999.99,
+    "PreviousPrice": 2299.99,
+    "Stock": 7,
+    "Color": "Vermelho",
+    "Colors": [
+      {
+        "ProductItemID": "PI002",
+        "Color": "Vermelho",
+        "Photo": "bike_pro_vermelha.jpg"
+      },
+      {
+        "ProductItemID": "PI002",
+        "Color": "Preto",
+        "Photo": "bike_pro_preta.jpg"
+      }
+    ],
+    "Reviews": [
+      {
+        "ReviewID": "R003",
+        "Customer": "Carlos",
+        "Rate": 5,
+        "Review": "Bicicleta excelente para trilhas!"
+      },
+      {
+        "ReviewID": "R004",
+        "Customer": "Ana",
+        "Rate": 4,
+        "Review": "Muito confortável, mas achei pesada."
+      }
+    ],
+    "Photos": [
+      "bike_pro_1.jpg",
+      "bike_pro_2.jpg"
+    ],
+    "Promotions": [
+      {
+        "ProductID": "P002",
+        "Description": "5% off à vista",
+        "DiscountPct": 5.0,
+        "Installments": 1,
+        "InstallmentValue": 0.0,
+        "CardType": "",
+        "ExtraDiscountPct": 0.0
+      }
+    ],
+    "BestSeller": false
+  }
+]

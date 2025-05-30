@@ -1,0 +1,12 @@
+[
+  {
+    "PaymentMethodID": "PM01",
+    "Icon": "visa.png",
+    "Type": "credit"
+  },
+  {
+    "PaymentMethodID": "PM02",
+    "Icon": "mastercard.png",
+    "Type": "debit"
+  }
+]
