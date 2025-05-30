@@ -8,26 +8,26 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-type ProductUseCase interface {
+type ProductDetailUseCase interface {
 	GetAll() ([]domain.ProductItem, error)
-	GetProduct(productID string) (*domain.ProductItem, error)
-	GetProductDetails(productID string) (*delivery.ItemProductResponse, error)
+	GetProductItem(productID string) (*domain.ProductItem, error)
+	GetProductDetails(productID string) (*delivery.ProductDetailResponse, error)
 }
 
-type productUseCase struct {
-	repo                 repository.ProductRepository
-	paymentMethodUseCase PaymentMethodUseCase
-	factory              factory.ItemProductResponseFactory
+type productDetailUseCase struct {
+	productItemRepository         repository.ProductItemRepository
+	paymentMethodUseCase          PaymentMethodUseCase
+	productDetailsResponseFactory factory.ProductDetailResponseFactory
 }
 
-func NewProductUseCase(repo repository.ProductRepository, paymentMethodUseCase PaymentMethodUseCase, factory factory.ItemProductResponseFactory) *productUseCase {
-	return &productUseCase{repo: repo, paymentMethodUseCase: paymentMethodUseCase, factory: factory}
+func NewProductDetailUseCase(repo repository.ProductItemRepository, paymentMethodUseCase PaymentMethodUseCase, factory factory.ProductDetailResponseFactory) *productDetailUseCase {
+	return &productDetailUseCase{productItemRepository: repo, paymentMethodUseCase: paymentMethodUseCase, productDetailsResponseFactory: factory}
 }
 
-func (uc *productUseCase) GetProductDetails(productItemID string) (*delivery.ItemProductResponse, error) {
+func (uc *productDetailUseCase) GetProductDetails(productItemID string) (*delivery.ProductDetailResponse, error) {
 	logrus.Infof("Fetching details for product item ID: %s", productItemID)
 
-	product, err := uc.GetProduct(productItemID)
+	product, err := uc.GetProductItem(productItemID)
 	if err != nil {
 		logrus.Errorf("Error fetching product details: %v", err)
 		return nil, err
@@ -44,13 +44,13 @@ func (uc *productUseCase) GetProductDetails(productItemID string) (*delivery.Ite
 	}
 
 	logrus.Infof("Successfully fetched product details for item ID: %s", productItemID)
-	return uc.factory.ToItemProductResponse(*product, paymentMethods), nil
+	return uc.productDetailsResponseFactory.ToProductDetailResponse(*product, paymentMethods), nil
 }
 
-func (uc *productUseCase) GetProduct(productItemID string) (*domain.ProductItem, error) {
+func (uc *productDetailUseCase) GetProductItem(productItemID string) (*domain.ProductItem, error) {
 	logrus.Infof("Fetching product with item ID: %s", productItemID)
 
-	products, err := uc.repo.GetAll()
+	products, err := uc.productItemRepository.GetAll()
 	if err != nil {
 		logrus.Errorf("Error fetching products: %v", err)
 		return nil, err
@@ -70,10 +70,10 @@ func (uc *productUseCase) GetProduct(productItemID string) (*domain.ProductItem,
 	return nil, nil
 }
 
-func (uc *productUseCase) GetAll() ([]domain.ProductItem, error) {
+func (uc *productDetailUseCase) GetAll() ([]domain.ProductItem, error) {
 	logrus.Info("Fetching all products")
 
-	products, err := uc.repo.GetAll()
+	products, err := uc.productItemRepository.GetAll()
 	if err != nil {
 		logrus.Errorf("Error fetching all products: %v", err)
 		return nil, err

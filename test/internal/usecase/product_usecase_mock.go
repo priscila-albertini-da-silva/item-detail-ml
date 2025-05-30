@@ -2,7 +2,7 @@ package usecase
 
 import "github.com/priscila-albertini-da-silva/item-detail-ml/internal/handler/delivery"
 
-var MockProductItem = delivery.ItemProductResponse{
+var MockProductItem = delivery.ProductDetailResponse{
 	ProductItemID: "P001",
 	ProductID:     "1",
 	Name:          "Produto Mock",

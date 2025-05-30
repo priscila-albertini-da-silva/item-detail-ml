@@ -10,19 +10,19 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-type ProductRepository interface {
+type ProductItemRepository interface {
 	GetAll() ([]domain.ProductItem, error)
 }
 
-type productRepository struct {
+type productItemRepository struct {
 	dataPath string
 }
 
-func NewProductRepository(dataPath string) ProductRepository {
-	return &productRepository{dataPath: dataPath}
+func NewProductRepository(dataPath string) ProductItemRepository {
+	return &productItemRepository{dataPath: dataPath}
 }
 
-func (r *productRepository) GetAll() ([]domain.ProductItem, error) {
+func (r *productItemRepository) GetAll() ([]domain.ProductItem, error) {
 	file := filepath.Join(r.dataPath, "products.json")
 	f, err := os.Open(file)
 	if err != nil {

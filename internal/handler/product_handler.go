@@ -7,15 +7,15 @@ import (
 	"github.com/priscila-albertini-da-silva/item-detail-ml/internal/usecase"
 )
 
-type ProductHandler struct {
-	usecase usecase.ProductUseCase
+type ProductDetailHandler struct {
+	usecase usecase.ProductDetailUseCase
 }
 
-func NewProductHandler(uc usecase.ProductUseCase) *ProductHandler {
-	return &ProductHandler{usecase: uc}
+func NewProductHandler(uc usecase.ProductDetailUseCase) *ProductDetailHandler {
+	return &ProductDetailHandler{usecase: uc}
 }
 
-func (h *ProductHandler) GetProductDetails(c *gin.Context) {
+func (h *ProductDetailHandler) GetProductDetails(c *gin.Context) {
 	id := c.Param("id")
 	if id == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Product ID is required"})

@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func setupRouter(handler *handler.ProductHandler) *gin.Engine {
+func setupRouter(handler *handler.ProductDetailHandler) *gin.Engine {
 	gin.SetMode(gin.TestMode)
 	r := gin.Default()
 	r.GET("/products/:id", handler.GetProductDetails)
@@ -21,7 +21,7 @@ func setupRouter(handler *handler.ProductHandler) *gin.Engine {
 }
 
 func TestGetProductDetails_MissingID(t *testing.T) {
-	mockUC := new(mocks.ProductUseCase)
+	mockUC := new(mocks.ProductDetailUseCase)
 	handler := handler.NewProductHandler(mockUC)
 	router := gin.Default()
 	router.GET("/products/", handler.GetProductDetails)
@@ -35,8 +35,8 @@ func TestGetProductDetails_MissingID(t *testing.T) {
 }
 
 func TestGetProductDetails_UseCaseError(t *testing.T) {
-	mockUC := new(mocks.ProductUseCase)
-	mockUC.On("GetProductDetails", "123").Return((*delivery.ItemProductResponse)(nil), errors.New("some error"))
+	mockUC := new(mocks.ProductDetailUseCase)
+	mockUC.On("GetProductDetails", "123").Return((*delivery.ProductDetailResponse)(nil), errors.New("some error"))
 
 	handler := handler.NewProductHandler(mockUC)
 	router := setupRouter(handler)
@@ -51,11 +51,11 @@ func TestGetProductDetails_UseCaseError(t *testing.T) {
 }
 
 func TestGetProductDetails_Success(t *testing.T) {
-	expected := &delivery.ItemProductResponse{
+	expected := &delivery.ProductDetailResponse{
 		ProductID: "123",
 		Name:      "Test Product",
 	}
-	mockUC := new(mocks.ProductUseCase)
+	mockUC := new(mocks.ProductDetailUseCase)
 	mockUC.On("GetProductDetails", "123").Return(expected, nil)
 
 	handler := handler.NewProductHandler(mockUC)

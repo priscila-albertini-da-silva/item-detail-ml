@@ -5,6 +5,6 @@ import (
 	"github.com/priscila-albertini-da-silva/item-detail-ml/internal/handler"
 )
 
-func RegisterRoutes(r *gin.Engine, productHandler *handler.ProductHandler) {
+func RegisterRoutes(r *gin.Engine, productHandler *handler.ProductDetailHandler) {
 	r.GET("/product/:id", productHandler.GetProductDetails)
 }

@@ -5,18 +5,18 @@ import (
 	"github.com/priscila-albertini-da-silva/item-detail-ml/internal/handler/delivery"
 )
 
-type ItemProductResponseFactory interface {
-	ToItemProductResponse(p domain.ProductItem, pm []domain.PaymentMethod) *delivery.ItemProductResponse
+type ProductDetailResponseFactory interface {
+	ToProductDetailResponse(p domain.ProductItem, pm []domain.PaymentMethod) *delivery.ProductDetailResponse
 }
 
-type DefaultItemProductResponseFactory struct{}
+type productDetailResponseFactory struct{}
 
-func NewItemProductResponseFactory() ItemProductResponseFactory {
-	return &DefaultItemProductResponseFactory{}
+func NewProductDetailResponseFactory() ProductDetailResponseFactory {
+	return &productDetailResponseFactory{}
 }
 
-func (f *DefaultItemProductResponseFactory) ToItemProductResponse(p domain.ProductItem, pm []domain.PaymentMethod) *delivery.ItemProductResponse {
-	return &delivery.ItemProductResponse{
+func (f *productDetailResponseFactory) ToProductDetailResponse(p domain.ProductItem, pm []domain.PaymentMethod) *delivery.ProductDetailResponse {
+	return &delivery.ProductDetailResponse{
 		ProductID:         p.ProductID,
 		Price:             p.Price,
 		PreviousPrice:     p.PreviousPrice,

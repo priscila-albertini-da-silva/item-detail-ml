@@ -1,6 +1,6 @@
 package delivery
 
-type ItemProductResponse struct {
+type ProductDetailResponse struct {
 	ProductItemID     string
 	ProductID         string
 	Name              string

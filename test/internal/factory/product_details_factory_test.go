@@ -7,14 +7,14 @@ import (
 	"github.com/priscila-albertini-da-silva/item-detail-ml/internal/factory"
 )
 
-func TestToItemProductResponse_AllFields(t *testing.T) {
-	factory := factory.NewItemProductResponseFactory()
+func TestToProductDetailResponse_AllFields(t *testing.T) {
+	factory := factory.NewProductDetailResponseFactory()
 
 	product := MockProduct
 	productItem := MockProductItem
 	paymentMethods := MockPaymentMethods
 
-	resp := factory.ToItemProductResponse(productItem, paymentMethods)
+	resp := factory.ToProductDetailResponse(productItem, paymentMethods)
 
 	if resp.ProductID != productItem.ProductID {
 		t.Errorf("ProductID mismatch")
@@ -84,12 +84,12 @@ func TestToItemProductResponse_AllFields(t *testing.T) {
 	}
 }
 
-func TestToItemProductResponse_EmptySlicesAndNilParent(t *testing.T) {
-	factory := factory.NewItemProductResponseFactory()
+func TestToProductDetailResponse_EmptySlicesAndNilParent(t *testing.T) {
+	factory := factory.NewProductDetailResponseFactory()
 
 	productItem := MockProductItemEmptySlices
 
-	resp := factory.ToItemProductResponse(productItem, nil)
+	resp := factory.ToProductDetailResponse(productItem, nil)
 
 	if len(resp.Photos) != 0 {
 		t.Errorf("Expected nil Photos")

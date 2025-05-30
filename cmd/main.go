@@ -31,9 +31,9 @@ func main() {
 	productRepo := repository.NewProductRepository(mockDataPath)
 	paymentMethodRepo := repository.NewPaymentMethodRepository(mockDataPath)
 	paymentMethodUseCase := usecase.NewPaymentMethodUseCase(paymentMethodRepo)
-	productDetailsFactory := factory.NewItemProductResponseFactory()
-	productUseCase := usecase.NewProductUseCase(productRepo, paymentMethodUseCase, productDetailsFactory)
-	productHandler := handler.NewProductHandler(productUseCase)
+	productDetailsFactory := factory.NewProductDetailResponseFactory()
+	ProductDetailUseCase := usecase.NewProductDetailUseCase(productRepo, paymentMethodUseCase, productDetailsFactory)
+	productHandler := handler.NewProductHandler(ProductDetailUseCase)
 
 	r := gin.Default()
 	routes.RegisterRoutes(r, productHandler)
