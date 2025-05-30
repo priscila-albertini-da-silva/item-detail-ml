@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"errors"
 	"testing"
 
 	"github.com/priscila-albertini-da-silva/item-detail-ml/internal/domain"
@@ -52,4 +53,88 @@ func TestProductUseCase_GetProductDetails(t *testing.T) {
 	assert.Equal(t, "1", got.ProductItemID)
 	mockRepo.AssertExpectations(t)
 	mockPaymentUC.AssertExpectations(t)
+}
+
+func TestGetProductDetails_ErrorOnGetProduct(t *testing.T) {
+	mockRepo := new(mocks.ProductRepository)
+	mockPaymentUC := new(mocks.PaymentMethodUseCase)
+	mockFactory := new(mocks.ItemProductResponseFactory)
+
+	uc := usecase.NewProductUseCase(mockRepo, mockPaymentUC, mockFactory)
+
+	mockRepo.On("GetAll").Return(nil, errors.New("repo error"))
+
+	resp, err := uc.GetProductDetails("1")
+	assert.Nil(t, resp)
+	assert.EqualError(t, err, "repo error")
+}
+
+func TestGetProductDetails_ProductNil(t *testing.T) {
+	mockRepo := new(mocks.ProductRepository)
+	mockPaymentUC := new(mocks.PaymentMethodUseCase)
+	mockFactory := new(mocks.ItemProductResponseFactory)
+
+	uc := usecase.NewProductUseCase(mockRepo, mockPaymentUC, mockFactory)
+
+	mockRepo.On("GetAll").Return(nil, nil)
+
+	resp, err := uc.GetProductDetails("1")
+	assert.Nil(t, resp)
+	assert.NoError(t, err)
+}
+
+func TestGetProductDetails_ErrorOnGetPaymentMethods(t *testing.T) {
+	mockRepo := new(mocks.ProductRepository)
+	mockPaymentUC := new(mocks.PaymentMethodUseCase)
+	mockFactory := new(mocks.ItemProductResponseFactory)
+
+	uc := usecase.NewProductUseCase(mockRepo, mockPaymentUC, mockFactory)
+
+	mockRepo.On("GetAll").Return([]domain.ProductItem{{ProductItemID: "1"}}, nil).Once()
+
+	mockPaymentUC.On("GetAll").Return(nil, errors.New("payment error"))
+
+	resp, err := uc.GetProductDetails("1")
+	assert.Nil(t, resp)
+	assert.EqualError(t, err, "payment error")
+}
+
+func TestGetProduct_NotFound(t *testing.T) {
+	mockRepo := new(mocks.ProductRepository)
+
+	mockRepo.On("GetAll").Return([]domain.ProductItem{
+		{ProductItemID: "A"},
+		{ProductItemID: "B"},
+	}, nil)
+
+	uc := usecase.NewProductUseCase(mockRepo, nil, nil)
+
+	result, err := uc.GetProduct("X")
+	assert.Nil(t, result)
+	assert.NoError(t, err)
+	mockRepo.AssertExpectations(t)
+}
+
+func TestGetAll_ErrorOnRepo(t *testing.T) {
+	mockRepo := new(mocks.ProductRepository)
+	mockRepo.On("GetAll").Return(nil, errors.New("repo error"))
+
+	uc := usecase.NewProductUseCase(mockRepo, nil, nil)
+
+	result, err := uc.GetAll()
+	assert.Nil(t, result)
+	assert.EqualError(t, err, "repo error")
+	mockRepo.AssertExpectations(t)
+}
+
+func TestGetAll_EmptyProducts(t *testing.T) {
+	mockRepo := new(mocks.ProductRepository)
+	mockRepo.On("GetAll").Return([]domain.ProductItem{}, nil)
+
+	uc := usecase.NewProductUseCase(mockRepo, nil, nil)
+
+	result, err := uc.GetAll()
+	assert.Nil(t, result)
+	assert.NoError(t, err)
+	mockRepo.AssertExpectations(t)
 }
