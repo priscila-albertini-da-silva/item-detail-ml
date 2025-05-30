@@ -9,7 +9,6 @@ import (
 )
 
 type ProductDetailUseCase interface {
-	GetAll() ([]domain.ProductItem, error)
 	GetProductItem(productID string) (*domain.ProductItem, error)
 	GetProductDetails(productID string) (*delivery.ProductDetailResponse, error)
 }
@@ -68,22 +67,4 @@ func (uc *productDetailUseCase) GetProductItem(productItemID string) (*domain.Pr
 
 	logrus.Warnf("No product found with item ID: %s", productItemID)
 	return nil, nil
-}
-
-func (uc *productDetailUseCase) GetAll() ([]domain.ProductItem, error) {
-	logrus.Info("Fetching all products")
-
-	products, err := uc.productItemRepository.GetAll()
-	if err != nil {
-		logrus.Errorf("Error fetching all products: %v", err)
-		return nil, err
-	}
-
-	if len(products) == 0 {
-		logrus.Warn("No products found in the repository")
-		return nil, nil
-	}
-
-	logrus.Infof("Successfully fetched %d products", len(products))
-	return products, nil
 }

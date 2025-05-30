@@ -2,7 +2,7 @@ package repository
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"io"
 	"os"
 	"path/filepath"
 
@@ -31,7 +31,7 @@ func (r *paymentMethodRepository) GetAll() ([]domain.PaymentMethod, error) {
 	}
 	defer f.Close()
 
-	bytes, err := ioutil.ReadAll(f)
+	bytes, err := io.ReadAll(f)
 	if err != nil {
 		logrus.WithError(err).WithField("file", file).Error("Error reading payment methods file")
 		return nil, err

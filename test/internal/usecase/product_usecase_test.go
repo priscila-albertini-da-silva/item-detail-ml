@@ -12,17 +12,6 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-func TestProductDetailUseCase_GetAll(t *testing.T) {
-	mockRepo := new(mocks.ProductRepository)
-	mockRepo.On("GetAll").Return([]domain.ProductItem{{ProductItemID: "1"}}, nil).Once()
-
-	uc := usecase.NewProductDetailUseCase(mockRepo, nil, nil)
-	got, err := uc.GetAll()
-	assert.NoError(t, err)
-	assert.Equal(t, []domain.ProductItem{{ProductItemID: "1"}}, got)
-	mockRepo.AssertExpectations(t)
-}
-
 func TestProductDetailUseCase_GetProduct(t *testing.T) {
 	mockRepo := new(mocks.ProductRepository)
 	mockRepo.On("GetAll").Return([]domain.ProductItem{{ProductItemID: "1"}}, nil).Once()
@@ -110,30 +99,6 @@ func TestGetProduct_NotFound(t *testing.T) {
 	uc := usecase.NewProductDetailUseCase(mockRepo, nil, nil)
 
 	result, err := uc.GetProductItem("X")
-	assert.Nil(t, result)
-	assert.NoError(t, err)
-	mockRepo.AssertExpectations(t)
-}
-
-func TestGetAll_ErrorOnRepo(t *testing.T) {
-	mockRepo := new(mocks.ProductRepository)
-	mockRepo.On("GetAll").Return(nil, errors.New("repo error"))
-
-	uc := usecase.NewProductDetailUseCase(mockRepo, nil, nil)
-
-	result, err := uc.GetAll()
-	assert.Nil(t, result)
-	assert.EqualError(t, err, "repo error")
-	mockRepo.AssertExpectations(t)
-}
-
-func TestGetAll_EmptyProducts(t *testing.T) {
-	mockRepo := new(mocks.ProductRepository)
-	mockRepo.On("GetAll").Return([]domain.ProductItem{}, nil)
-
-	uc := usecase.NewProductDetailUseCase(mockRepo, nil, nil)
-
-	result, err := uc.GetAll()
 	assert.Nil(t, result)
 	assert.NoError(t, err)
 	mockRepo.AssertExpectations(t)
