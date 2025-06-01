@@ -36,6 +36,8 @@ func main() {
 	productHandler := handler.NewProductHandler(ProductDetailUseCase)
 
 	r := gin.Default()
+	r.Use(gin.Logger())
+	r.Use(gin.Recovery())
 	routes.RegisterRoutes(r, productHandler)
 	r.Run(serverPort)
 }
