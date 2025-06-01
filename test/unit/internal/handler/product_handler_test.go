@@ -9,7 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/priscila-albertini-da-silva/item-detail-ml/internal/handler"
 	"github.com/priscila-albertini-da-silva/item-detail-ml/internal/handler/delivery"
-	"github.com/priscila-albertini-da-silva/item-detail-ml/test/internal/mocks"
+	"github.com/priscila-albertini-da-silva/item-detail-ml/test/mocks"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -31,7 +31,7 @@ func TestGetProductDetails_MissingID(t *testing.T) {
 	router.ServeHTTP(w, req)
 
 	assert.Equal(t, http.StatusBadRequest, w.Code)
-	assert.Contains(t, w.Body.String(), "Product ID is required")
+	assert.Contains(t, w.Body.String(), "Product Item ID is required")
 }
 
 func TestGetProductDetails_UseCaseError(t *testing.T) {
@@ -68,5 +68,23 @@ func TestGetProductDetails_Success(t *testing.T) {
 	assert.Equal(t, http.StatusOK, w.Code)
 	assert.Contains(t, w.Body.String(), `"ProductID":"123"`)
 	assert.Contains(t, w.Body.String(), `"Name":"Test Product"`)
+	mockUC.AssertExpectations(t)
+}
+
+func TestGetProductDetails_NotFound(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	mockUC := new(mocks.ProductDetailUseCase)
+	mockUC.On("GetProductDetails", "123").Return((*delivery.ProductDetailResponse)(nil), nil)
+
+	handler := handler.NewProductHandler(mockUC)
+	router := gin.Default()
+	router.GET("/products/:id", handler.GetProductDetails)
+
+	req, _ := http.NewRequest(http.MethodGet, "/products/123", nil)
+	w := httptest.NewRecorder()
+	router.ServeHTTP(w, req)
+
+	assert.Equal(t, http.StatusNotFound, w.Code)
+	assert.Contains(t, w.Body.String(), "Product not found")
 	mockUC.AssertExpectations(t)
 }

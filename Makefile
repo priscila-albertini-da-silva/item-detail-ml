@@ -8,7 +8,7 @@ cover:
 
 cover-html:
 	go test -coverprofile=coverage.out ./...
-	findstr /V -v "test/" coverage.out | findstr /V -v "internal/domain/" | findstr /V -v "cmd/" | findstr /V -v "internal/handler/routes/" > coverage.filtered
+	findstr /V -v "test/" coverage.out | findstr /V -v "internal/domain/" | findstr /V -v "cmd/" | findstr /V -v "internal/handler/routes/" | findstr /V -v "docs/" > coverage.filtered
 	go tool cover -html=coverage.filtered
 
 run:

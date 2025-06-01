@@ -3,10 +3,10 @@ package repository
 import (
 	"encoding/json"
 	"io"
-	"os"
 	"path/filepath"
 
 	"github.com/priscila-albertini-da-silva/item-detail-ml/internal/domain"
+	"github.com/priscila-albertini-da-silva/item-detail-ml/pkg"
 	"github.com/sirupsen/logrus"
 )
 
@@ -15,16 +15,27 @@ type ProductItemRepository interface {
 }
 
 type productItemRepository struct {
-	dataPath string
+	dataPath   string
+	fileOpener pkg.FileOpener
 }
 
 func NewProductRepository(dataPath string) ProductItemRepository {
-	return &productItemRepository{dataPath: dataPath}
+	return &productItemRepository{
+		dataPath:   dataPath,
+		fileOpener: pkg.OsFileOpener{},
+	}
+}
+
+func NewProductRepositoryWithOpener(dataPath string, opener pkg.FileOpener) ProductItemRepository {
+	return &productItemRepository{
+		dataPath:   dataPath,
+		fileOpener: opener,
+	}
 }
 
 func (r *productItemRepository) GetAll() ([]domain.ProductItem, error) {
 	file := filepath.Join(r.dataPath, "products.json")
-	f, err := os.Open(file)
+	f, err := r.fileOpener.Open(file)
 	if err != nil {
 		logrus.WithError(err).WithField("file", file).Error("Error opening products file")
 		return nil, err

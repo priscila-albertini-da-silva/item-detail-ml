@@ -1,0 +1,69 @@
+# Decisões de Design e Desafios do Sistema Item Detail ML
+
+## Decisões de Design
+
+### 1. **Arquitetura em Camadas (Clean Architecture)**
+
+Optei por organizar o sistema em camadas bem definidas: **domain**, **repository**, **usecase**, **factory**, **handler** e **cmd**.  
+Isso facilita a manutenção, testes e evolução do projeto, além de permitir a substituição de implementações (ex: trocar um repositório mock por um real) sem impactar outras camadas.
+
+### 2. **Uso de Interfaces**
+
+Utilizei interfaces para repositórios e usecases, permitindo o uso de mocks nos testes e facilitando a injeção de dependências.  
+Isso também torna o sistema mais flexível para futuras integrações com bancos de dados reais ou APIs externas.
+
+### 3. **Mocks com Mockery**
+
+Adotei o [mockery](https://github.com/vektra/mockery) para geração automática de mocks das interfaces.  
+Isso reduziu o tempo de escrita de testes e garantiu consistência nos testes unitários.
+
+### 4. **Observabilidade com Logrus**
+
+Implementei logs estruturados com [logrus](https://github.com/sirupsen/logrus) em pontos críticos: inicialização, erros de I/O, falhas de negócio e integrações.  
+Isso facilita o diagnóstico de problemas em produção e durante o desenvolvimento.
+
+### 5. **Documentação da API com Swagger**
+
+Utilizei o [swaggo/swag](https://github.com/swaggo/swag) para gerar documentação automática da API a partir de comentários nos handlers.  
+Isso garante que a documentação esteja sempre alinhada com o código e facilita o consumo da API por outros times.
+
+### 6. **Testes Unitários e Cobertura**
+
+Organizei os testes em uma pasta separada, usando [testify](https://github.com/stretchr/testify) e mocks do mockery.  
+Implementei um Makefile para facilitar a execução dos testes e geração de relatórios de cobertura.
+
+### 7. **Separação de Dados Mockados**
+
+Os dados de exemplo (mock_data) ficam em arquivos JSON, facilitando a simulação de diferentes cenários sem alterar o código.
+
+---
+
+## Desafios Encontrados e Soluções
+
+### 1. **Mock de Leitura de Arquivos e io.ReadAll**
+
+**Desafio:**  
+No Go, não é possível fazer monkey patch diretamente em funções globais como `io.ReadAll` ou `os.Open`, o que dificulta simular erros de leitura de arquivo em testes unitários sem acessar o sistema de arquivos real.
+**Solução:**  
+Refatorei o repositório para aceitar uma interface (`FileOpener`) responsável por abrir arquivos. Nos testes, injetei um mock dessa interface que retorna um `io.Reader` customizado, permitindo simular erros em `io.ReadAll` e testar apenas a lógica do repositório, sem depender de arquivos reais ou do pacote `os/io`.
+
+### 2. **Cobertura de Código em Arquivos Não Testáveis**
+
+**Desafio:** Arquivos de configuração e mocks apareciam no relatório de coverage.
+**Solução:** Filtrei o coverage no Makefile usando `findstr` para ignorar pastas e arquivos que não precisam ser cobertos.
+
+### 3. **Padronização de Retornos de Erro**
+
+**Desafio:** Garantir que todos os endpoints retornem erros padronizados e documentados no Swagger.
+**Solução:** Criei o struct `ErrorResponse` e utilizei em todos os retornos de erro dos handlers, além de documentar nos comentários Swagger.
+
+### 4. **Separação de Responsabilidades**
+
+**Desafio:** Evitar violação da Lei de Demeter e manter o código limpo.
+**Solução:** Mantive o acesso a campos aninhados apenas em fábricas e DTOs, e centralizei lógica de negócio nos usecases.
+
+---
+
+## Considerações Finais
+
+Essas decisões e soluções permitiram construir um sistema modular, testável, observável e bem documentado, pronto para evoluir e ser integrado a outros sistemas ou bancos de dados reais no futuro.

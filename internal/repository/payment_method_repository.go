@@ -3,10 +3,10 @@ package repository
 import (
 	"encoding/json"
 	"io"
-	"os"
 	"path/filepath"
 
 	"github.com/priscila-albertini-da-silva/item-detail-ml/internal/domain"
+	"github.com/priscila-albertini-da-silva/item-detail-ml/pkg"
 	"github.com/sirupsen/logrus"
 )
 
@@ -15,16 +15,24 @@ type PaymentMethodRepository interface {
 }
 
 type paymentMethodRepository struct {
-	dataPath string
+	dataPath   string
+	fileOpener pkg.FileOpener
 }
 
 func NewPaymentMethodRepository(dataPath string) PaymentMethodRepository {
-	return &paymentMethodRepository{dataPath: dataPath}
+	return &paymentMethodRepository{dataPath: dataPath, fileOpener: pkg.OsFileOpener{}}
+}
+
+func NewPaymentMethodRepositoryWithOpener(dataPath string, opener pkg.FileOpener) PaymentMethodRepository {
+	return &paymentMethodRepository{
+		dataPath:   dataPath,
+		fileOpener: opener,
+	}
 }
 
 func (r *paymentMethodRepository) GetAll() ([]domain.PaymentMethod, error) {
 	file := filepath.Join(r.dataPath, "payment_methods.json")
-	f, err := os.Open(file)
+	f, err := r.fileOpener.Open(file)
 	if err != nil {
 		logrus.WithError(err).WithField("file", file).Error("Error opening payment methods file")
 		return nil, err

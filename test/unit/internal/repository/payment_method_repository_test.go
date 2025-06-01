@@ -2,7 +2,6 @@ package repository
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"testing"
@@ -13,14 +12,14 @@ import (
 )
 
 func createTempPaymentMethodsFile(t *testing.T, data []domain.PaymentMethod) (string, func()) {
-	dir, err := ioutil.TempDir("", "payment_methods_test")
+	dir, err := os.MkdirTemp("", "payment_methods_test")
 	assert.NoError(t, err)
 
 	filePath := filepath.Join(dir, "payment_methods.json")
 	bytes, err := json.Marshal(data)
 	assert.NoError(t, err)
 
-	err = ioutil.WriteFile(filePath, bytes, 0644)
+	err = os.WriteFile(filePath, bytes, 0644)
 	assert.NoError(t, err)
 
 	cleanup := func() {
@@ -40,7 +39,7 @@ func TestPaymentMethodRepository_GetAll_Success(t *testing.T) {
 }
 
 func TestPaymentMethodRepository_GetAll_FileNotFound(t *testing.T) {
-	dir, err := ioutil.TempDir("", "payment_methods_test")
+	dir, err := os.MkdirTemp("", "payment_methods_test")
 	assert.NoError(t, err)
 	defer os.RemoveAll(dir)
 
@@ -50,15 +49,24 @@ func TestPaymentMethodRepository_GetAll_FileNotFound(t *testing.T) {
 }
 
 func TestPaymentMethodRepository_GetAll_InvalidJSON(t *testing.T) {
-	dir, err := ioutil.TempDir("", "payment_methods_test")
+	dir, err := os.MkdirTemp("", "payment_methods_test")
 	assert.NoError(t, err)
 	defer os.RemoveAll(dir)
 
 	filePath := filepath.Join(dir, "payment_methods.json")
-	err = ioutil.WriteFile(filePath, []byte("invalid json"), 0644)
+	err = os.WriteFile(filePath, []byte("invalid json"), 0644)
 	assert.NoError(t, err)
 
 	repo := repository.NewPaymentMethodRepository(dir)
 	_, err = repo.GetAll()
+	assert.Error(t, err)
+}
+
+func TestGetAllPaymentMethods_ReadAllError(t *testing.T) {
+	mockOpener := &mockFileOpener{
+		reader: errorReader{},
+	}
+	repo := repository.NewPaymentMethodRepositoryWithOpener("mockpath", mockOpener)
+	_, err := repo.GetAll()
 	assert.Error(t, err)
 }

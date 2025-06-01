@@ -39,7 +39,6 @@ func (uc *productDetailUseCase) GetProductDetails(productItemID string) (*delive
 	paymentMethods, err := uc.paymentMethodUseCase.GetAll()
 	if err != nil {
 		logrus.Errorf("Error fetching payment methods: %v", err)
-		return nil, err
 	}
 
 	logrus.Infof("Successfully fetched product details for item ID: %s", productItemID)
