@@ -82,7 +82,6 @@ func (f *productDetailResponseFactory) ToProductDetailResponse(p domain.ProductI
 					Installments:     promo.Installments,
 					InstallmentValue: promo.InstallmentValue,
 					CardType:         promo.CardType,
-					ExtraDiscountPct: promo.ExtraDiscountPct,
 				}
 			}
 			return promotions

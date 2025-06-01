@@ -40,7 +40,6 @@ type ProductPromotionResponse struct {
 	Installments     int
 	InstallmentValue float64
 	CardType         string
-	ExtraDiscountPct float64
 }
 
 type ProductReviewResponse struct {

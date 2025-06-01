@@ -8,5 +8,4 @@ type Promotion struct {
 	Installments     int
 	InstallmentValue float64
 	CardType         string
-	ExtraDiscountPct float64
 }

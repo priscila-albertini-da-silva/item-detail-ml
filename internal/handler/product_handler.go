@@ -35,7 +35,7 @@ func (h *ProductDetailHandler) GetProductDetails(c *gin.Context) {
 
 	productDetails, err := h.usecase.GetProductDetails(id)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, delivery.ErrorResponse{Error: err.Error()})
+		c.JSON(http.StatusInternalServerError, delivery.ErrorResponse{Error: "Internal server error: " + err.Error()})
 		return
 	}
 

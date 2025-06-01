@@ -27,6 +27,7 @@ func setupIntegrationRouter(dataPath string) *gin.Engine {
 
 	r := gin.Default()
 	r.GET("/products/:id", h.GetProductDetails)
+	r.GET("/products", h.GetProductDetails)
 	return r
 }
 
@@ -62,7 +63,7 @@ func TestIntegration_GetProductDetails_NotFound(t *testing.T) {
 func TestIntegration_GetProductDetails_MissingID(t *testing.T) {
 	dir := t.TempDir()
 	router := setupIntegrationRouter(dir)
-	req, _ := http.NewRequest(http.MethodGet, "/products/", nil)
+	req, _ := http.NewRequest(http.MethodGet, "/products", nil)
 	w := httptest.NewRecorder()
 	router.ServeHTTP(w, req)
 
@@ -82,5 +83,5 @@ func TestIntegration_GetProductDetails_InternalError(t *testing.T) {
 	router.ServeHTTP(w, req)
 
 	assert.Equal(t, http.StatusInternalServerError, w.Code)
-	assert.Contains(t, w.Body.String(), "internal") // ou parte da mensagem de erro retornada
+	assert.Contains(t, w.Body.String(), "Internal")
 }

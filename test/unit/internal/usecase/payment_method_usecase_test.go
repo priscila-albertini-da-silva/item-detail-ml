@@ -6,7 +6,7 @@ import (
 
 	"github.com/priscila-albertini-da-silva/item-detail-ml/internal/domain"
 	"github.com/priscila-albertini-da-silva/item-detail-ml/internal/usecase"
-	"github.com/priscila-albertini-da-silva/item-detail-ml/test/internal/mocks"
+	"github.com/priscila-albertini-da-silva/item-detail-ml/test/mocks"
 	"github.com/stretchr/testify/assert"
 )
 

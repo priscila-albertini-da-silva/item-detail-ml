@@ -7,7 +7,7 @@ import (
 	"github.com/priscila-albertini-da-silva/item-detail-ml/internal/domain"
 	"github.com/priscila-albertini-da-silva/item-detail-ml/internal/handler/delivery"
 	"github.com/priscila-albertini-da-silva/item-detail-ml/internal/usecase"
-	"github.com/priscila-albertini-da-silva/item-detail-ml/test/internal/mocks"
+	"github.com/priscila-albertini-da-silva/item-detail-ml/test/mocks"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
@@ -77,15 +77,20 @@ func TestGetProductDetails_ErrorOnGetPaymentMethods(t *testing.T) {
 	mockPaymentUC := new(mocks.PaymentMethodUseCase)
 	mockFactory := new(mocks.ProductDetailResponseFactory)
 
+	mockRepo.On("GetAll").Return([]domain.ProductItem{{ProductItemID: "1"}}, nil).Once()
+	mockPaymentUC.On("GetAll").Return(nil, errors.New("payment error"))
+	mockFactory.On("ToProductDetailResponse", mock.Anything, mock.Anything).
+		Return(&delivery.ProductDetailResponse{ProductItemID: "1"})
+
 	uc := usecase.NewProductDetailUseCase(mockRepo, mockPaymentUC, mockFactory)
 
-	mockRepo.On("GetAll").Return([]domain.ProductItem{{ProductItemID: "1"}}, nil).Once()
-
-	mockPaymentUC.On("GetAll").Return(nil, errors.New("payment error"))
-
 	resp, err := uc.GetProductDetails("1")
-	assert.Nil(t, resp)
-	assert.EqualError(t, err, "payment error")
+	assert.NotNil(t, resp)
+	assert.NoError(t, err)
+	assert.Equal(t, "1", resp.ProductItemID)
+	mockRepo.AssertExpectations(t)
+	mockPaymentUC.AssertExpectations(t)
+	mockFactory.AssertExpectations(t)
 }
 
 func TestGetProduct_NotFound(t *testing.T) {

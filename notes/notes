@@ -62,6 +62,14 @@ Refatorei o repositório para aceitar uma interface (`FileOpener`) responsável 
 **Desafio:** Evitar violação da Lei de Demeter e manter o código limpo.
 **Solução:** Mantive o acesso a campos aninhados apenas em fábricas e DTOs, e centralizei lógica de negócio nos usecases.
 
+### 5. **Modelagem das Entidades de Domínio**
+
+**Desafio:**  
+Definir as entidades de domínio foi desafiador, pois exigiu entender profundamente as regras de negócio, identificar os relacionamentos entre produtos, vendedores, métodos de pagamento, promoções e avaliações, e garantir que o modelo fosse flexível para futuras mudanças. Também foi necessário equilibrar simplicidade e completude, evitando tanto excesso de detalhes quanto abstrações demais.
+
+**Solução:**  
+Estudei o documento do desafio e exemplos de APIs de e-commerce para identificar os atributos essenciais de cada entidade. Comecei com um modelo mais simples e fui refinando conforme surgiam novas necessidades durante o desenvolvimento dos usecases e handlers. Sempre priorizei a clareza e a coesão das entidades, mantendo-as focadas em representar o domínio do negócio, e extraí comportamentos e relacionamentos para camadas superiores quando necessário.
+
 ---
 
 ## Considerações Finais

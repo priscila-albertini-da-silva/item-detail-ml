@@ -221,9 +221,6 @@ const docTemplate = `{
                 "discountPct": {
                     "type": "number"
                 },
-                "extraDiscountPct": {
-                    "type": "number"
-                },
                 "installmentValue": {
                     "type": "number"
                 },
