@@ -13,7 +13,6 @@ Projeto em Go para detalhamento de itens, simulação de produtos e meios de pag
 │   ├── handler/            # Handlers HTTP (controllers)
 │   ├── repository/         # Repositórios (acesso a dados)
 │   ├── usecase/            # Casos de uso (regras de negócio)
-│   └── mocks/              # Mocks gerados pelo mockery
 ├── mock_data/              # Dados mockados em JSON
 ├── test/                   # Testes unitários e arquivos de mock
 ├── Makefile                # Comandos utilitários
