@@ -56,6 +56,24 @@ Projeto em Go para detalhamento de itens, simulação de produtos e meios de pag
   make cover-html
   ```
 
+## Visualizando a documentação Swagger
+
+Após rodar a aplicação, acesse a documentação interativa da API em:
+
+```
+http://localhost:8080/swagger/index.html
+```
+
+Você verá todos os endpoints, parâmetros e exemplos de resposta gerados automaticamente a partir dos comentários do código.
+
+Se ainda não gerou a documentação, execute:
+
+```sh
+swag init --generalInfo cmd/main.go
+```
+
+Isso criará a pasta `docs/` necessária para o Swagger funcionar.
+
 ## Mocks
 
 Mocks de interfaces são gerados com [mockery](https://github.com/vektra/mockery):

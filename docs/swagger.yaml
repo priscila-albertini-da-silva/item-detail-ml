@@ -1,0 +1,183 @@
+definitions:
+  delivery.ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  delivery.PaymentMethodResponse:
+    properties:
+      icon:
+        type: string
+      paymentMethodID:
+        type: string
+      type:
+        type: string
+    type: object
+  delivery.ProductCategoryResponse:
+    properties:
+      categoryID:
+        type: string
+      description:
+        type: string
+      parentCategory:
+        $ref: '#/definitions/delivery.ProductCategoryResponse'
+    type: object
+  delivery.ProductColorResponse:
+    properties:
+      color:
+        type: string
+      photo:
+        type: string
+      productItemID:
+        type: string
+    type: object
+  delivery.ProductDetailResponse:
+    properties:
+      bestSeller:
+        type: boolean
+      brand:
+        type: string
+      category:
+        $ref: '#/definitions/delivery.ProductCategoryResponse'
+      colors:
+        items:
+          $ref: '#/definitions/delivery.ProductColorResponse'
+        type: array
+      description:
+        type: string
+      name:
+        type: string
+      paymentMethods:
+        items:
+          $ref: '#/definitions/delivery.PaymentMethodResponse'
+        type: array
+      photos:
+        items:
+          type: string
+        type: array
+      previousPrice:
+        type: number
+      price:
+        type: number
+      productID:
+        type: string
+      productItemID:
+        type: string
+      promotions:
+        items:
+          $ref: '#/definitions/delivery.ProductPromotionResponse'
+        type: array
+      relatedProducts:
+        items:
+          $ref: '#/definitions/delivery.RelatedProductsResponse'
+        type: array
+      reviews:
+        items:
+          $ref: '#/definitions/delivery.ProductReviewResponse'
+        type: array
+      seller:
+        $ref: '#/definitions/delivery.SellerResponse'
+      stock:
+        type: integer
+      technicalFeatures:
+        additionalProperties: true
+        type: object
+    type: object
+  delivery.ProductPromotionResponse:
+    properties:
+      cardType:
+        type: string
+      description:
+        type: string
+      discountPct:
+        type: number
+      extraDiscountPct:
+        type: number
+      installmentValue:
+        type: number
+      installments:
+        type: integer
+      productID:
+        type: string
+    type: object
+  delivery.ProductReviewResponse:
+    properties:
+      customer:
+        type: string
+      rate:
+        type: integer
+      review:
+        type: string
+      reviewID:
+        type: string
+    type: object
+  delivery.RelatedProductsResponse:
+    properties:
+      name:
+        type: string
+      photo:
+        type: string
+      price:
+        type: number
+      productItemID:
+        type: string
+      promotion:
+        type: string
+    type: object
+  delivery.SellerResponse:
+    properties:
+      name:
+        type: string
+      officialSeal:
+        type: boolean
+      rating:
+        type: number
+      sellerID:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /health:
+    get:
+      description: Retorna status de saúde da API
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Health check
+      tags:
+      - health
+  /products/{id}:
+    get:
+      description: Retorna detalhes do produto por ID do item
+      parameters:
+      - description: Product Item ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/delivery.ProductDetailResponse'
+        "400":
+          description: ID ausente ou inválido
+          schema:
+            $ref: '#/definitions/delivery.ErrorResponse'
+        "404":
+          description: Produto não encontrado
+          schema:
+            $ref: '#/definitions/delivery.ErrorResponse'
+        "500":
+          description: Erro interno
+          schema:
+            $ref: '#/definitions/delivery.ErrorResponse'
+      summary: Detalhes do produto
+      tags:
+      - products
+swagger: "2.0"

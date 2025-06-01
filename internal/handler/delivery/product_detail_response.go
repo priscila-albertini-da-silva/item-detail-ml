@@ -70,3 +70,7 @@ type PaymentMethodResponse struct {
 	Icon            string
 	Type            string
 }
+
+type ErrorResponse struct {
+	Error string `json:"error"`
+}

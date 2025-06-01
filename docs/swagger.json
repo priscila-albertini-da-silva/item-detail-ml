@@ -1,0 +1,282 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/health": {
+            "get": {
+                "description": "Retorna status de saúde da API",
+                "tags": [
+                    "health"
+                ],
+                "summary": "Health check",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/products/{id}": {
+            "get": {
+                "description": "Retorna detalhes do produto por ID do item",
+                "tags": [
+                    "products"
+                ],
+                "summary": "Detalhes do produto",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Product Item ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.ProductDetailResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "ID ausente ou inválido",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Produto não encontrado",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "delivery.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
+        "delivery.PaymentMethodResponse": {
+            "type": "object",
+            "properties": {
+                "icon": {
+                    "type": "string"
+                },
+                "paymentMethodID": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "delivery.ProductCategoryResponse": {
+            "type": "object",
+            "properties": {
+                "categoryID": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "parentCategory": {
+                    "$ref": "#/definitions/delivery.ProductCategoryResponse"
+                }
+            }
+        },
+        "delivery.ProductColorResponse": {
+            "type": "object",
+            "properties": {
+                "color": {
+                    "type": "string"
+                },
+                "photo": {
+                    "type": "string"
+                },
+                "productItemID": {
+                    "type": "string"
+                }
+            }
+        },
+        "delivery.ProductDetailResponse": {
+            "type": "object",
+            "properties": {
+                "bestSeller": {
+                    "type": "boolean"
+                },
+                "brand": {
+                    "type": "string"
+                },
+                "category": {
+                    "$ref": "#/definitions/delivery.ProductCategoryResponse"
+                },
+                "colors": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/delivery.ProductColorResponse"
+                    }
+                },
+                "description": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "paymentMethods": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/delivery.PaymentMethodResponse"
+                    }
+                },
+                "photos": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "previousPrice": {
+                    "type": "number"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "productID": {
+                    "type": "string"
+                },
+                "productItemID": {
+                    "type": "string"
+                },
+                "promotions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/delivery.ProductPromotionResponse"
+                    }
+                },
+                "relatedProducts": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/delivery.RelatedProductsResponse"
+                    }
+                },
+                "reviews": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/delivery.ProductReviewResponse"
+                    }
+                },
+                "seller": {
+                    "$ref": "#/definitions/delivery.SellerResponse"
+                },
+                "stock": {
+                    "type": "integer"
+                },
+                "technicalFeatures": {
+                    "type": "object",
+                    "additionalProperties": true
+                }
+            }
+        },
+        "delivery.ProductPromotionResponse": {
+            "type": "object",
+            "properties": {
+                "cardType": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "discountPct": {
+                    "type": "number"
+                },
+                "extraDiscountPct": {
+                    "type": "number"
+                },
+                "installmentValue": {
+                    "type": "number"
+                },
+                "installments": {
+                    "type": "integer"
+                },
+                "productID": {
+                    "type": "string"
+                }
+            }
+        },
+        "delivery.ProductReviewResponse": {
+            "type": "object",
+            "properties": {
+                "customer": {
+                    "type": "string"
+                },
+                "rate": {
+                    "type": "integer"
+                },
+                "review": {
+                    "type": "string"
+                },
+                "reviewID": {
+                    "type": "string"
+                }
+            }
+        },
+        "delivery.RelatedProductsResponse": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "photo": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "productItemID": {
+                    "type": "string"
+                },
+                "promotion": {
+                    "type": "string"
+                }
+            }
+        },
+        "delivery.SellerResponse": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "officialSeal": {
+                    "type": "boolean"
+                },
+                "rating": {
+                    "type": "number"
+                },
+                "sellerID": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
