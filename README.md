@@ -10,11 +10,15 @@ Projeto em Go para detalhamento de itens, simulação de produtos e meios de pag
 ├── internal/
 │   ├── domain/             # Entidades de domínio
 │   ├── factory/            # Factories para responses
-│   ├── handler/            # Handlers HTTP (controllers)
+│   ├── handler/            # Handlers HTTP (controllers) e rotas
+│   ├── mocks/              # Mocks gerados pelo mockery
 │   ├── repository/         # Repositórios (acesso a dados)
 │   ├── usecase/            # Casos de uso (regras de negócio)
 ├── mock_data/              # Dados mockados em JSON
-├── test/                   # Testes unitários e arquivos de mock
+├── pkg/                    # Utilitários e abstrações compartilhadas
+├── docs/                   # Documentação Swagger gerada automaticamente
+├── test/                   # Testes unitários e de integração
+├── notes/                  # Anotações e documentação interna (opcional)
 ├── Makefile                # Comandos utilitários
 └── go.mod
 ```
